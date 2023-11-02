@@ -20,20 +20,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 // import { updateUser } from "@/lib/actions/user.actions"
 import { threadValidation } from "@/lib/validations/thread";
 import { usePathname, useRouter } from "next/navigation"
+import { createThread } from "@/lib/actions/createThread.actions"
 
 interface Props {
-    user: {
-        id: string;
-        objectId: string;
-        username: string;
-        name: string,
-        bio: string,
-        image: string
-    };
-    btnTitle: string;
+  userId: string;
 }
 
-function PostThread({ userId }: { userId: string }) {
+function PostThread({ userId }:Props) {
     const router = useRouter()
     const pathname = usePathname()
 
@@ -45,38 +38,46 @@ function PostThread({ userId }: { userId: string }) {
         }
     })
 
-    const onSubmit = () => {
+    const onSubmit = async (values:z.infer<typeof threadValidation>) => {
+        await createThread({ 
+            text: values.thread,
+            author:userId,
+            communityId:null,
+            path: pathname
+         })
 
+         router.push("/")
     }
 
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="mt-10 flex- flex-col justify-start gap-10">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="mt-10 flex flex-col justify-start gap-10">
                     <FormField
                         control={form.control}
                         name="thread"
                         render={({ field }) => (
-                            <FormItem className="flex items-center gap-3 w-full">
-                                <FormLabel className="text-base-semibold text-light-2">
-                                    Content
-                                </FormLabel>
-                                <FormControl className="no-focus border border-dark-4 bg-dark-3 text-light-1">
+                            <div className="w-full">
+                                <FormLabel className="text-base-semibold text-light-2">Content</FormLabel>
+                                <FormControl className="no-focus border border-dark-4 bg-dark-3 text-light-1 mt-3">
                                     <Textarea
                                         rows={15}
                                         {...field}
+                                        className="w-full p-2 text-sm bg-dark-3 border border-dark-4 text-light-1"
                                     />
                                 </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                                <FormMessage className="text-sm text-red-500" />
+                            </div>
                         )}
                     />
-                    <Button type="submit" className="bg-primary-500">Post Thread</Button>
+                    <Button type="submit" className="bg-primary-500 p-2 text-white">
+                        Post Thread
+                    </Button>
                 </form>
             </Form>
+
         </>
     );
-
 }
 
 export default PostThread
