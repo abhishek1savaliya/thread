@@ -13,12 +13,7 @@ import {
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { zodResolver } from '@hookform/resolvers/zod'
-// import Image from "next/image"
-// import { ChangeEvent, useState } from "react"
-// import { isBase64Image } from "@/lib/utils"
-// import { useUploadThing } from "@/lib/uploadThing"
-// import { updateUser } from "@/lib/actions/user.actions"
-import { threadValidation } from "@/lib/validations/thread";
+import { ThreadValidation } from "@/lib/validations/thread";
 import { usePathname, useRouter } from "next/navigation"
 import { createThread } from "@/lib/actions/createThread.actions"
 
@@ -31,14 +26,14 @@ function PostThread({ userId }:Props) {
     const pathname = usePathname()
 
     const form = useForm({
-        resolver: zodResolver(threadValidation),
+        resolver: zodResolver(ThreadValidation),
         defaultValues: {
             thread: '',
             accountId: userId,
         }
     })
 
-    const onSubmit = async (values:z.infer<typeof threadValidation>) => {
+    const onSubmit = async (values:z.infer<typeof ThreadValidation>) => {
         await createThread({ 
             text: values.thread,
             author:userId,
