@@ -21,6 +21,10 @@ const nextConfig = {
         },
         {
           protocol: "https",
+          hostname: "utfs.io",
+        },
+        {
+          protocol: "https",
           hostname: "uploadthing.com",
         },
         {
@@ -32,3 +36,5 @@ const nextConfig = {
   };
   
   module.exports = nextConfig;
+
+  
