@@ -83,6 +83,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
             }
         }
 
+        console.log(  "rfshntdfgng",values.username)
+
         await updateUser({
             userId: user.id,
             username: values.username,

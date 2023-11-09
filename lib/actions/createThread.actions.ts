@@ -110,7 +110,6 @@ export async function addCommentToThread(threadId: string,
         })
 
         const savedCommentThread = await commentThread.save()
-
         originalThread.children.push(savedCommentThread._id)
 
         await originalThread.save();
@@ -120,6 +119,5 @@ export async function addCommentToThread(threadId: string,
     catch (error: any) {
         throw new Error(`Error adding comment to thread: ${error.message}`)
     }
-
 }
 
