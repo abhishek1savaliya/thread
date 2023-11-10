@@ -4,25 +4,28 @@ import { currentUser } from "@clerk/nextjs";
 import { redirect } from 'next/navigation'
 import { Profiler } from "react";
 
-async function Page({params}:{params:{id:string}}) {
+async function Page({ params }: { params: { id: string } }) {
     const user = await currentUser();
 
-    if(!user) return null;
+    if (!user) return null;
 
     const userInfo = await fetchUser(params.id);
 
-    if(!userInfo?.onboarded) redirect ('/onboarding')
+    if (!userInfo?.onboarded) redirect('/onboarding')
 
     return (
         <section>
-            <ProfileHeader 
-            accountID = {userInfo.id}
-            authUserID = {user.id}
-            name = {userInfo.name}
-            username = {userInfo.username}
-            imgUrl = {userInfo.image}
-            bio={userInfo.bio}
+            <ProfileHeader
+                accountId={userInfo.id}
+                authUserId={user.id}
+                name={userInfo.name}
+                username={userInfo.username}
+                imgUrl={userInfo.image}
+                bio={userInfo.bio}
             />
+
+
+
         </section>
     )
 }
